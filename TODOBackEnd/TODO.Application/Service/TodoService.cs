@@ -28,15 +28,20 @@ namespace TODO.Application.Service
             return todos.AsReadOnly();
         }
 
-        public async Task<Todo?> GetTodoByIdAsync(Guid id)
+        public async Task<TodoResponseDto?> GetTodoByIdAsync(Guid id)
         {
-            return await repository.GetByIdAsync(id);
+            var response =  await repository.GetByIdAsync(id);
+
+            return new TodoResponseDto(
+                response.Id, response.Title, response.Description, response.Created, response.IsCompleted);
         }
 
-        public async Task<Todo?> GetTodoByTitleAsync(string title)
+        public async Task<TodoResponseDto?> GetTodoByTitleAsync(string title)
         {
             if (string.IsNullOrWhiteSpace(title)) return null;
-            return await repository.GetByTitleAsync(title);
+            var response = await repository.GetByTitleAsync(title);
+            return new TodoResponseDto(
+                response.Id, response.Title, response.Description, response.Created, response.IsCompleted);
         }
 
         public async Task<TodoResponseDto> InsertTodoAsync(InsertTodoDto dto)
