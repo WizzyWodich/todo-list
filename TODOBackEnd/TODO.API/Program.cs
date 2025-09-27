@@ -50,13 +50,7 @@ namespace TODO.API
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
-
-                options.AddPolicy("AllowSwager", policy =>
-                {
-                    policy.WithOrigins("http://localhost:7045")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                });
+                               
             });
 
             builder.Services.AddControllers();
