@@ -7,6 +7,7 @@ namespace TODO.Infrastructure.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -27,6 +28,19 @@ namespace TODO.Infrastructure.Data
             modelBuilder.Entity<Todo>()
                 .Property(t => t.Created)
                 .HasDefaultValueSql("NOW()");
+
+            // FK Ключи для таблиц
+            // { Один пользователь может имень множество задач }
+            modelBuilder.Entity<Todo>()
+                .HasOne(t => t.User)
+                .WithMany(u => u.Todos)
+                .HasForeignKey(t => t.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Todos)
+                .WithOne(t => t.User)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             base.OnModelCreating(modelBuilder);

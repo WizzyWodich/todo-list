@@ -1,25 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TODO.Application.Contracts.Service;
-using TODO.Domain.DTO;
+using TODO.Domain.DTO.Todo;
 
 namespace TODO.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : ControllerBase
+    public class TodoController(ITodoService todoService) : ControllerBase
     {
-        private readonly ITodoService _todoService;
-
-        public TodoController(ITodoService todoService)
-        {
-            _todoService = todoService;
-        }
-
+             
         // GET: api/todo
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<TodoResponseDto>>> GetAllTodos()
         {
-            var todos = await _todoService.GetAllTodos();
+            var todos = await todoService.GetAllTodos();
             return Ok(todos);
         }
 
@@ -27,7 +21,7 @@ namespace TODO.API.Controllers
         [HttpGet("active")]
         public async Task<ActionResult<IReadOnlyList<TodoResponseDto>>> GetActiveTodos()
         {
-            var todos = await _todoService.GetActiveTodosAsync();
+            var todos = await todoService.GetActiveTodosAsync();
             return Ok(todos);
         }
 
@@ -35,7 +29,7 @@ namespace TODO.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoResponseDto>> GetTodoById(Guid id)
         {
-            var todo = await _todoService.GetTodoByIdAsync(id);
+            var todo = await todoService.GetTodoByIdAsync(id);
             if (todo == null) return NotFound();
             return Ok(todo);
         }
@@ -46,7 +40,7 @@ namespace TODO.API.Controllers
         {
             if (dto is null) return BadRequest();
 
-            var created = await _todoService.InsertTodoAsync(dto);
+            var created = await todoService.InsertTodoAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetTodoById),
@@ -59,7 +53,7 @@ namespace TODO.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTodo(Guid id, [FromBody] UpdateTodoDto dto)
         {
-            var updated = await _todoService.UpdateTodoAsync(id, dto);
+            var updated = await todoService.UpdateTodoAsync(id, dto);
             if (!updated) return NotFound();
             return NoContent();
         }
@@ -68,7 +62,7 @@ namespace TODO.API.Controllers
         [HttpPatch("status/{id}")]
         public async Task<IActionResult> ToggleTodoStatus(Guid id)
         {
-            var updated = await _todoService.UpdateTodoStatusAsync(id);
+            var updated = await todoService.UpdateTodoStatusAsync(id);
             if (!updated) return NotFound();
             return NoContent();
         }
@@ -77,7 +71,7 @@ namespace TODO.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(Guid id)
         {
-            var deleted = await _todoService.DeleteTodoByIdAsync(id);
+            var deleted = await todoService.DeleteTodoByIdAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
         }
@@ -88,7 +82,7 @@ namespace TODO.API.Controllers
         //{
         //    if (ids == null || ids.Length == 0) return BadRequest();
 
-        //    var affectedRows = await _todoService.DeleteTodosByIdsAsync(ids);
+        //    var affectedRows = await todoService.DeleteTodosByIdsAsync(ids);
         //    return Ok(new { deleted = affectedRows });
         //}
 
@@ -96,7 +90,7 @@ namespace TODO.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAllTodos()
         {
-            var affectedRows = await _todoService.DeleteAllAsync();
+            var affectedRows = await todoService.DeleteAllAsync();
             return Ok(new { deleted = affectedRows });
         }
     }

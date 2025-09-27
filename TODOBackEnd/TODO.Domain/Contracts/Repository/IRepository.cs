@@ -5,10 +5,10 @@
         Task<T?> GetByIdAsync(Guid id);
         IQueryable<T> GetAllQueryable();
 
-        Task InsertAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteByIdAsync(Guid id);
-        Task DeleteMoreByIdAsync(List<Guid> ids);
-        Task DeleteAllAsync();
+        Task<bool> InsertAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteOneAsync(T entity);
+        Task<bool> DeleteMoreByIdAsync(List<Guid> ids);
+        Task<bool> DeleteAllAsync();
     }
 }

@@ -6,6 +6,6 @@ namespace TODO.Domain.Contracts.Repository
     public interface ITodoRepository : IRepository<Todo>
     {
         Task<Todo?> GetByTitleAsync(string title);
-        Task UpdateStatusAsync(Todo entity);
+        Task<bool> UpdateStatusAsync(Todo entity);
     }
 }

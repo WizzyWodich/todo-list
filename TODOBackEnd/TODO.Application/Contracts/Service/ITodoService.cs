@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TODO.Domain.DTO;
+﻿using TODO.Domain.DTO.Todo;
 using TODO.Domain.Models;
 
 namespace TODO.Application.Contracts.Service
