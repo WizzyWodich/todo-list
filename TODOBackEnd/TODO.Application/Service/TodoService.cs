@@ -46,8 +46,6 @@ namespace TODO.Application.Service
 
         public async Task<TodoResponseDto> InsertTodoAsync(InsertTodoDto dto)
         {
-            if (dto is null) throw new ArgumentNullException(nameof(dto));
-
             var todo = new Todo
             {
                 Id = Guid.NewGuid(),

@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TODO.Application.Contracts.Service;
 using TODO.Domain.Contracts.Repository;
-using TODO.Domain.Models;
 using TODO.Domain.DTO.User;
+using TODO.Domain.Models;
 
 namespace TODO.Application.Service
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(IUserRepository userRepository, IPasswordHasher<User> hasher) : IUserService
     {
         public async Task<IReadOnlyList<UserResponceDto>> GetAllUser()
         {
             var usersList = await userRepository.GetAllQueryable()
-                .Select(u => new UserResponceDto(u.Id, u.UserName, u.Password, u.Email, u.Todos.ToList()))
+                .Select(u => new UserResponceDto(u.Id, u.UserName, u.PasswordHash, u.Email, u.Todos.ToList()))
                 .ToListAsync();
 
             return usersList.AsReadOnly();
@@ -34,19 +35,12 @@ namespace TODO.Application.Service
         //}
 
         public async Task<UserResponceDto> RegistrationUserAsync(InsertUserDto dto)
-        {
-            if (dto is null) throw new ArgumentNullException(nameof(dto));
+        { 
+            var user = User.Create(dto.UserName, dto.Password, dto.Email, hasher);
 
-            var user = new User
-            {
-                UserName = dto.UserName,
-                Email = dto.Email,
-            };
-            var passwordHash = new PasswordHasher<User>().HashPassword(user, dto.Password);
-            user.Password = passwordHash;            
             await userRepository.InsertAsync(user);
 
-            return new UserResponceDto(user.Id, user.UserName, user.Password, user.Email, user.Todos);
+            return new UserResponceDto(user.Id, user.UserName, user.PasswordHash, user.Email, user.Todos);
         }
     }
 }
