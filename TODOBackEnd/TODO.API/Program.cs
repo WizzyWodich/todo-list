@@ -1,9 +1,11 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TODO.API.Settings;
 using TODO.Application.Contracts.Service;
 using TODO.Application.Service;
 using TODO.Domain.Contracts.Repository;
+using TODO.Domain.Models;
 using TODO.Infrastructure.Data;
 using TODO.Infrastructure.Repository;
 
@@ -37,6 +39,7 @@ namespace TODO.API
             builder.Services.AddScoped<IUserRepository, EfUserRepository>();
             builder.Services.AddScoped<ITodoService, TodoService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             builder.Services.Configure<JwtSettings>(
                 builder.Configuration.GetSection("JwtSettings"));
 
