@@ -9,7 +9,7 @@ namespace TODO.Infrastructure.Repository
     {
         public async Task<bool> InsertAsync(Todo entity)
         {
-            await appDbContext.Todos.AddAsync(entity);
+            appDbContext.Todos.Add(entity);
             var result = await appDbContext.SaveChangesAsync();
             return (result > 0);
         }
