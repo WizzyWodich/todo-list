@@ -7,8 +7,8 @@ namespace TODO.Application.Contracts.Service
     {
         Task<IReadOnlyList<TodoResponseDto>> GetAllTodos();
         Task<IReadOnlyList<TodoResponseDto>> GetActiveTodosAsync();
-        Task<Todo?> GetTodoByIdAsync(Guid id);
-        Task<Todo?> GetTodoByTitleAsync(string title);
+        Task<TodoResponseDto?> GetTodoByIdAsync(Guid id);
+        Task<TodoResponseDto?> GetTodoByTitleAsync(string title);
         Task<TodoResponseDto> InsertTodoAsync(InsertTodoDto dto);
         Task<bool> UpdateTodoAsync(Guid id, UpdateTodoDto dto);
         Task<bool> UpdateTodoStatusAsync(Guid id);
