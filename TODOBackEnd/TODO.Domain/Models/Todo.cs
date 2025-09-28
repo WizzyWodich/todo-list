@@ -3,14 +3,13 @@
     public class Todo
     {
 
-        // TODO: Сменить Guid на UUID
-        public Guid Id { get; set; } = Guid.NewGuid(); // PK
-        public string Title { get; set; }
+        public Guid Id { get; set; } 
+        public required string Title { get; set; }
         public string? Description { get; set; }
-        public DateTime Created { get; set; } = DateTime.UtcNow.Date;
+        public DateTime Created { get; set; }
         public bool IsCompleted { get; set; } = false;
 
         public Guid UserId { get; set; } // FK
-        public virtual User User { get; set; }        
+        public User User { get; set; }        
     }
 }
