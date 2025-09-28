@@ -1,6 +1,6 @@
 ﻿namespace TODO.API.Settings
 {
-    internal class JwtSettings
+    public class JwtSettings
     {
     }
 }
